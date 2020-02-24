@@ -114,8 +114,13 @@ class ESN(object):
         states, embedded_states,_ = self._compute_state_matrix(X = Xtr, Y = Ytr, n_drop = n_drop)
 
         # Train output
-        self._regression_method.fit(np.concatenate((embedded_states, self._scaleshift(Xtr[n_drop:,:], self._input_scaling, self._input_shift)), axis=1),
-                self._scaleshift(Ytr[n_drop:,:], self._teacher_scaling, self._teacher_shift).flatten())
+        self._regression_method.fit(
+            np.concatenate((embedded_states, self._scaleshift(Xtr[n_drop:, :], self._input_scaling, self._input_shift)),
+                           axis=1),
+            self._scaleshift(Ytr[n_drop:, :], self._teacher_scaling, self._teacher_shift))
+        # Otherwise 24-h doesn't work.
+        # self._regression_method.fit(np.concatenate((embedded_states, self._scaleshift(Xtr[n_drop:,:], self._input_scaling, self._input_shift)), axis=1),
+        #         self._scaleshift(Ytr[n_drop:,:], self._teacher_scaling, self._teacher_shift).flatten())
 
         return states, embedded_states
 
@@ -352,7 +357,11 @@ def load_lorenz(path, shift):
 def load_from_text(path):
     data = np.loadtxt(path)
 
-    return np.atleast_2d(data[:, 0]).T, np.atleast_2d(data[:, 1]).T
+    if "D4D_24" in path:
+        return np.atleast_2d(data[:, :6]).T.reshape(-1, 6), np.atleast_2d(data[:, 6:]).T.reshape(-1, 24)
+    else:
+        l = [0, 2, 3, 4, 5, 6]
+        return np.atleast_2d(data[:, l]).T.reshape(-1, 6), np.atleast_2d(data[:, 2]).T
 
 def load_from_dir(path):
     Xtr_base = np.loadtxt(path + '/Xtr')
