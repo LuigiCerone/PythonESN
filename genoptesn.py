@@ -10,6 +10,7 @@ import sys
 from deap import base, creator, tools, algorithms
 from functools import partial
 from scoop import futures
+from sklearn.preprocessing import MinMaxScaler
 
 import esnet
 import parameterhelper
@@ -60,7 +61,7 @@ else:
     X, Y = esnet.load_from_text(args.data)
 
     # Construct training/test sets
-    Xtr, Ytr, Xval, Yval, _, _ = esnet.generate_datasets(X, Y)
+    Xtr, Ytr, Xval, Yval, _, _ = esnet.generate_datasets(X, Y, scaler=MinMaxScaler)
 
 ############################################################################
 # Initialization of the genetic algorithm

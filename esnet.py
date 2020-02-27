@@ -358,10 +358,11 @@ def load_from_text(path):
     data = np.loadtxt(path)
 
     if "D4D_24" in path:
-        return np.atleast_2d(data[:, :6]).T.reshape(-1, 6), np.atleast_2d(data[:, 6:]).T.reshape(-1, 24)
+        return np.atleast_2d(data[:, :6]), np.atleast_2d(data[:, 6:])
     else:
+        # l = [0, 2]
         l = [0, 2, 3, 4, 5, 6]
-        return np.atleast_2d(data[:, l]).T.reshape(-1, 6), np.atleast_2d(data[:, 2]).T
+        return np.atleast_2d(data[:, l]), np.atleast_2d(data[:, 1]).T
 
 def load_from_dir(path):
     Xtr_base = np.loadtxt(path + '/Xtr')
