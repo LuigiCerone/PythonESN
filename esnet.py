@@ -360,8 +360,10 @@ def load_from_text(path):
     if "D4D_24" in path:
         return np.atleast_2d(data[:, :6]), np.atleast_2d(data[:, 6:])
     else:
-        # l = [0, 2]
-        l = [0, 2, 3, 4, 5, 6]
+        if data.shape[1] == 3:
+            l = [0, 2]
+        elif data.shape[1] == 7:
+            l = [0, 2, 3, 4, 5, 6]
         return np.atleast_2d(data[:, l]), np.atleast_2d(data[:, 1]).T
 
 def load_from_dir(path):
