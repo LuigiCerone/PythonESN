@@ -1,6 +1,10 @@
 data/D4D_all
 data/D4D_all_red
-__pycache__/
 data/D4D_most
 data/D4D_most_red
 data/D4D_label_red_most
+data/D4D
+data/D4D_24
+
+
+__pycache__/
