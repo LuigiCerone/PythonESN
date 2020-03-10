@@ -255,7 +255,7 @@ def run_from_config(Xtr, Ytr, Xte, Yte, config):
     esn.fit(Xtr, Ytr, n_drop = n_drop, regression_method = regression_method, regression_parameters = regression_parameters,
             embedding = embedding, n_dim = n_dim, embedding_parameters = embedding_parameters)
 
-    Yhat,error = esn.predict(Xte, Yte)
+    Yhat,error = esn.predict(Xte, Yte, n_drop = n_drop)
 
     return Yhat, error
 
@@ -282,6 +282,9 @@ def run_from_config_return_states(Xtr, Ytr, Xte, Yte, config):
     # Fit and predict
     train_states, train_embedding = esn._fit_transform(Xtr, Ytr, n_drop = n_drop, regression_method = regression_method, regression_parameters = regression_parameters,
             embedding = embedding, n_dim = n_dim, embedding_parameters = embedding_parameters)
+
+    print("Shape of Xte: {}".format(Xte.shape))
+    print("Shape of Yte: {}".format(Yte.shape))
 
     Yhat, error, test_states, test_embedding = esn._predict_transform(Xte, Yte)
 
@@ -358,7 +361,11 @@ def load_from_text(path):
     data = np.loadtxt(path)
 
     if "D4D_24" in path:
-        return np.atleast_2d(data[:, :6]), np.atleast_2d(data[:, 6:])
+        if data.shape[1] == 3:
+            l = [0, 1]
+        elif data.shape[1] == 8:
+            l = [0, 1, 2, 3, 4, 5, 6]
+        return np.atleast_2d(data[:, l]), np.atleast_2d(data[:, (data.shape[1]-1)]).T
     else:
         if data.shape[1] == 3:
             l = [0, 2]

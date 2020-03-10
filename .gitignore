@@ -6,5 +6,10 @@ data/D4D_label_red_most
 data/D4D
 data/D4D_24
 
+data/D4D_24_all
+data/D4D_24_all_red
+data/D4D_24_label_red_most
+data/D4D_24_most
+data/D4D_24_most_red
 
 __pycache__/
